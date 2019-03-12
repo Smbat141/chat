@@ -3,6 +3,10 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    Users Count<span id="users_count"></span>
+                        <button class="btn btn-primary" style="margin-left: 580px">Exit</button>
+                </div>
+                <div class="panel-heading">
                     <form action="{{route('room.store')}}"  class="contact-form" id="comment" method="POST" enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="form-group">
@@ -14,10 +18,15 @@
                     </form>
                 </div>
                 <div class="panel-heading">
-                </div>
                     @foreach($comments as $comment)
-                        <p>{{$comment->text}}</p>
+                        <div class="alert alert-primary">
+                            <p>{{$comment->user->name}}</p>
+                            <p>{{$comment->text}}</p>
+                        </div>
+                        <hr/>
                     @endforeach
+                </div>
+
                 </div>
         </div>
     </div>

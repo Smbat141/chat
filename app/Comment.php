@@ -12,4 +12,8 @@ class Comment extends Model
         return $this->belongsToMany('App\Room');
     }
 
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
 }

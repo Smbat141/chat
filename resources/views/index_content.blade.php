@@ -6,22 +6,40 @@
                 <div class="panel-heading">
                     <p class="text-center">Web app</p>
                 </div>
+                @if(isset($user))
                 <div class="panel-heading">
                     <a href="{{route('create')}}" ><button class="btn btn-primary">Create new room</button></a>
                 </div>
+                @endif
                 <div class="panel-body">
-                    <ul class="list-group">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                             @foreach($rooms->reverse() as $room)
-                                <li class="list-group-item">
-                                    <a href="{{route('room.show',$room->id)}}">
-                                        <img style="width: 100px;height: 100px;" src="{{asset('images')}}/{{$room->image}}">
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('private',[$room->id]) }}" id="get_room">
+                                            <img style="width: 100px;height: 100px;" src="{{asset('images')}}/{{$room->image}}">
+                                        </a>
+                                    </td>
+                                    <td>
                                         {{$room->name}}
-                                    </a>
-                                </li>
+                                    </td>
+                                    <td>
+                                        <div  style="width: 6rem;">
+                                            <span class="badge badge-primary" style="background-color:#1f648b"> {{$room->status}}</span>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
-                    </ul>
-
-
+                        </tbody>
+                    </table>
 
                 </div>
             </div>

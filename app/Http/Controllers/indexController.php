@@ -16,11 +16,17 @@ class indexController extends Controller
     public function index()
     {
 
-        $rooms = Room::all();
-
+        $user = Auth::user();
+        if($user){
+            $rooms = Room::all();
+        }
+        else{
+            $rooms = Room::where('status','Public')->get();
+        }
         $data = [
             'rooms' => $rooms,
             'title' => 'Home',
+            'user' => $user,
         ];
         return view('welcome',$data);
     }
@@ -34,12 +40,17 @@ class indexController extends Controller
 
     public function create()
     {
-
+    if(Auth::user()){
         $data = [
             'title' => 'Create new room',
         ];
 
         return view('new_room',$data);
+    }
+    else{
+        abort(404);
+    }
+
     }
 
     /**
@@ -64,7 +75,7 @@ class indexController extends Controller
         $room->fill($data);
 
         if($room->save()){
-            return redirect()->route('index')->with('message','Room created');
+            return redirect()->route('private',$room->id);
         }
 
     }
