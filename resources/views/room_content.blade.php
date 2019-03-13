@@ -2,6 +2,11 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
+                @if($room->status == 'Private')
+                    <div class="panel-heading">
+                       <p>Your room url <a href="{{url('room-number/'.$room->key)}}">{{url('room-number/'.$room->key)}}</a></p>
+                    </div>
+                @endif
                 <div class="panel-heading">
                     Users Count<span id="users_count"></span>
                         <button class="btn btn-primary" style="margin-left: 580px">Exit</button>

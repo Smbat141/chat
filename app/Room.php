@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
-    protected $fillable = ['name','text','image','status','comment_id','user_id'];
+    protected $fillable = ['name','text','image','status','user_id','key'];
 
     public function comments(){
         return $this->hasMany('App\Room');

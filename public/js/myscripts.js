@@ -22,4 +22,29 @@ $(document).ready(function ($) {
     })
 
 
+    $('.get_room').on('click',function(){
+        var html = $(this).find('div span').html();
+        var url = $(this).find('.url').val();
+        var room_user_id = $(this).find('.rooom_user_id').val();
+        var user_id = $(this).find('.user_id').val();
+
+
+        if(html === ' Private' && room_user_id !== user_id ){
+           var name =  prompt('Please enter your url',);
+           if(name == url){
+               alert('success');
+               return true;
+           }
+           else{
+               alert('error');
+                return false
+           }
+
+        }
+
+
+
+    });
+
+
 });

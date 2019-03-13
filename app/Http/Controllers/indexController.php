@@ -15,7 +15,7 @@ class indexController extends Controller
      */
     public function index()
     {
-
+        //$url = url(Room::->key);
         $user = Auth::user();
         if($user){
             $rooms = Room::all();
@@ -64,6 +64,9 @@ class indexController extends Controller
         $data = $request->except('_token');
         $user = Auth::user()->id;
         $data['user_id'] = $user;
+        if($data['status'] == 'Private'){
+            $data['key'] = str_random(15);
+        }
 
         if($request->hasFile('image')){
             $file = $request->file('image');
@@ -75,7 +78,11 @@ class indexController extends Controller
         $room->fill($data);
 
         if($room->save()){
-            return redirect()->route('private',$room->id);
+            if($data['status'] == 'Private'){
+                return redirect()->route('rooms',$room->key);
+            }
+            return redirect()->route('rooms',$room->id);
+
         }
 
     }

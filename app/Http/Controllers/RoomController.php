@@ -64,22 +64,29 @@ class RoomController extends Controller
     }
 
     public function showRoom($id){
-        $room = Room::where('id',$id)->first();
-        if($room->status == 'Private' && !Auth::user()){
-            return redirect()->back()->with('message','You must be register');
+       if(strlen($id) == 15){
+            $room = Room::where('key',$id)->first();
         }
+        else{
+            $room = Room::where('id',$id)->first();
+
+        }
+
         $user_id = null;
         if(Auth::user()){
             $user_id = Auth::user()->id;
 
         }
+      /*  if($room->status == 'Private' and $room->user_id !== $user_id){
+            return redirect()->route('index')->with('message','Please enter your url');
+        }*/
         $comments = $this->getComment($id);
-
         $data = [
             'id' => $id,
             'user_id' => $user_id,
             'comments' => $comments,
             'title' => 'Room-'.$id,
+            'room' => $room,
         ];
         return view('room',$data);
     }

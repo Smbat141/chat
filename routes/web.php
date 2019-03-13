@@ -23,4 +23,4 @@ Auth::routes();
 Route::resource('/','indexController');
 Route::resource('/room','RoomController');
 
-Route::get('/room-number/{id}',['uses'=>'RoomController@showRoom','as'=>'private']);
+Route::get('/room-number/{id}',['uses'=>'RoomController@showRoom','as'=>'rooms']);

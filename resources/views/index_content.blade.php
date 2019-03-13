@@ -22,9 +22,14 @@
                         </thead>
                         <tbody>
                             @foreach($rooms->reverse() as $room)
-                                <tr>
+                                <tr class="get_room">
+                                    @if(isset($room->key))
+                                        <input type="hidden" value="{{url('room-number/'.$room->key)}}" class="url">
+                                        <input type="hidden" value="{{$room->user_id}}" class="rooom_user_id">
+                                        <input type="hidden" value="{{$user->id}}" class="user_id">
+                                    @endif
                                     <td>
-                                        <a href="{{ route('private',[$room->id]) }}" id="get_room">
+                                        <a href="{{$room->status == 'Private' ? route('rooms',[$room->key]) : route('rooms',[$room->id])}}" >
                                             <img style="width: 100px;height: 100px;" src="{{asset('images')}}/{{$room->image}}">
                                         </a>
                                     </td>
@@ -32,8 +37,8 @@
                                         {{$room->name}}
                                     </td>
                                     <td>
-                                        <div  style="width: 6rem;">
-                                            <span class="badge badge-primary" style="background-color:#1f648b"> {{$room->status}}</span>
+                                        <div  style="width: 6rem;" >
+                                            <span class="badge badge-primary status" style="background-color:#1f648b"> {{$room->status}}</span>
                                         </div>
                                     </td>
                                 </tr>
