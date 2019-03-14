@@ -8,8 +8,8 @@ class Comment extends Model
 {
     protected $fillable = ['text','user_id','room_id'];
 
-    public function rooms(){
-        return $this->belongsToMany('App\Room');
+    public function room(){
+        return $this->belongsTo('App\Room');
     }
 
     public function user(){

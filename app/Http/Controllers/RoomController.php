@@ -110,7 +110,28 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user_id = Auth::user()->id;
+        if(strlen($id) == 15){
+            $room = Room::where('key',$id)->first();
+        }
+        else{
+            $room = Room::where('id',$id)->first();
+
+        }
+        if($room->user_id == $user_id){
+            $comments = $room->comments;
+
+            foreach ($comments as $comment){
+                $comment->delete();
+            }
+
+            $room->delete();
+
+            return redirect()->route('index')->with('message','Room deleted');
+        }
+        return redirect()->route('index')->with('message','Not rules');
+
+
     }
 
 

@@ -16,8 +16,9 @@
                         <thead>
                         <tr>
                             <th scope="col">Image</th>
-                            <th scope="col">Name</th>
+                            <th scope="col">Room Name</th>
                             <th scope="col">Status</th>
+                            <th scope="col">User name</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -41,6 +42,10 @@
                                             <span class="badge badge-primary status" style="background-color:#1f648b"> {{$room->status}}</span>
                                         </div>
                                     </td>
+                                    <td>
+                                        {{$room->user->name}}
+                                    </td>
+
                                 </tr>
                             @endforeach
                         </tbody>

@@ -13,6 +13,11 @@
                             <div class="form-group">
                                 <label for="name">Room name</label>
                                 <input type="text"  name="name" class="form-control" placeholder="Room">
+                                @if($errors->has('name'))
+                                    <div class="alert alert-danger">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </div>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Example select</label>
@@ -24,6 +29,11 @@
                             <div class="form-group">
                                 <label for="image">Image</label>
                                 <input type="file" class="form-control-file" name="image">
+                                @if($errors->has('image'))
+                                    <div class="alert alert-danger">
+                                        <strong>{{ $errors->first('image') }}</strong>
+                                    </div>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="form-control-file" value="Create">

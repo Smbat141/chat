@@ -1,6 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
+
             <div class="panel panel-default">
                 @if($room->status == 'Private')
                     <div class="panel-heading">
@@ -8,8 +9,21 @@
                     </div>
                 @endif
                 <div class="panel-heading">
-                    Users Count<span id="users_count"></span>
-                        <a href="{{route('index')}}"><button class="btn btn-primary" style="margin-left: 580px">Exit</button></a>
+                        Users Count<span id="users_count"></span>
+                       <button class="btn btn-primary" style="margin-left: 580px"> <a href="{{route('index')}}" style="color: white">Exit</a></button>
+                </div>
+                <div class="panel-heading"  style="width: 100%;height: 300px;overflow: auto">
+                    @foreach($comments as $comment)
+                        <div class="alert alert-primary text-center">
+                            @if(isset($comment->user->name))
+                                <p>{{$comment->user->name}}</p>
+                                @else
+                                <p>Guest</p>
+                            @endif
+                            <p>{{$comment->text}}</p>
+                        </div>
+                        <hr/>
+                    @endforeach
                 </div>
                 <div class="panel-heading">
                     <form action="{{route('comment.store')}}"  class="contact-form" id="comment" method="POST" enctype="multipart/form-data">
@@ -22,20 +36,14 @@
                         </div>
                     </form>
                 </div>
-                <div class="panel-heading">
-                    @foreach($comments as $comment)
-                        <div class="alert alert-primary">
-                            @if(isset($comment->user->name))
-                                <p>{{$comment->user->name}}</p>
-                                @else
-                                <p>Guest</p>
-                            @endif
-                            <p>{{$comment->text}}</p>
-                        </div>
-                        <hr/>
-                    @endforeach
-                </div>
-
+                    @if($room->user_id == $user_id)
+                        <form action="{{route('room.destroy',$room->id)}}" method="post">
+                            {{csrf_field()}}
+                            {{method_field('DELETE')}}
+                            <input type="hidden" value="{{$room->status}}" name="test">
+                            <button class="btn btn-primary" type="submit" style="margin-left: 630px">Delete room</button>
+                        </form>
+                    @endif
                 </div>
         </div>
     </div>

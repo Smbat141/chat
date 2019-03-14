@@ -9,10 +9,10 @@ class Room extends Model
     protected $fillable = ['name','text','image','status','user_id','key'];
 
     public function comments(){
-        return $this->hasMany('App\Room');
+        return $this->hasMany('App\Comment');
     }
 
-    public function users(){
-        return $this->belongsToMany('App\User');
+    public function user(){
+        return $this->belongsTo('App\User');
     }
 }

@@ -14,8 +14,7 @@ class UpdateRoomsTable extends Migration
     public function up()
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->integer('comment_id')->unsigned();
-            $table->foreign('comment_id')->references('id')->on('comments');
+           $table->string('key')->default('NULL');
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');

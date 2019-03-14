@@ -28,10 +28,12 @@ class User extends Authenticatable
     ];
 
     public function rooms(){
-        return $this->belongsToMany('App\Room');
+        return $this->hasMany('App\Room');
     }
 
     public function comments(){
         return $this->hasMany('App\Comment');
     }
+
+
 }
