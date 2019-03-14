@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
-use App\Room;
-use http\Url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Comment;
 
-class RoomController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +15,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-
+        //
     }
 
     /**
@@ -29,7 +27,6 @@ class RoomController extends Controller
     {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -38,6 +35,16 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
+        $input = $request->except('_token');
+
+        if(Auth::user()){
+            $user_id = Auth::user()->id;
+            $input['user_id'] = $user_id;
+
+        }
+        $comment = new Comment;
+        $comment->fill($input);
+        $comment->save();
 
     }
 
@@ -49,34 +56,7 @@ class RoomController extends Controller
      */
     public function show($id)
     {
-
-    }
-
-    public function showRoom($id){
-       if(strlen($id) == 15){
-            $room = Room::where('key',$id)->first();
-            $id = $room->id;
-        }
-        else{
-            $room = Room::where('id',$id)->first();
-
-        }
-
-        $user_id = null;
-        if(Auth::user()){
-            $user_id = Auth::user()->id;
-
-        }
-
-        $comments = $this->getComment($id);
-        $data = [
-            'id' => $id,
-            'user_id' => $user_id,
-            'comments' => $comments,
-            'title' => 'Room-'.$id,
-            'room' => $room,
-        ];
-        return view('room',$data);
+        //
     }
 
     /**
@@ -111,20 +91,5 @@ class RoomController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-
-    public function getComment($where = false){
-
-        if($where){
-            $comment = Comment::where('room_id',$where)->get();
-
-        }
-        else{
-            $comment = Comment::all();
-
-        }
-
-        return $comment;
     }
 }

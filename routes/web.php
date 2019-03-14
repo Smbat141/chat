@@ -22,5 +22,9 @@ Auth::routes();
 
 Route::resource('/','indexController');
 Route::resource('/room','RoomController');
+Route::resource('/comment','CommentController');
 
 Route::get('/room-number/{id}',['uses'=>'RoomController@showRoom','as'=>'rooms']);
+
+Route::get('login/{service}', ['uses' => 'Auth\LoginController@redirectToProvider','as' => 'loginSocialite'] );
+Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback');

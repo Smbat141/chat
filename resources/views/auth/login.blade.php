@@ -61,6 +61,9 @@
                             </div>
                         </div>
                     </form>
+                    <a href="{{route('loginSocialite','facebook')}}"><button class="btn-primary">Login using Facebook</button></a>
+                    <a href="{{route('loginSocialite','google')}}"><button class="btn-primary">Login using Google</button></a>
+                    {{--<a href="{{route('loginSocialite')}}"><button class="btn-primary">Login using Twitter</button></a>--}}
                 </div>
             </div>
         </div>
