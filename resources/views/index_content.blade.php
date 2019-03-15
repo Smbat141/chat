@@ -31,7 +31,7 @@
                                     @endif
                                     <td>
                                         <a href="{{$room->status == 'Private' ? route('rooms',[$room->key]) : route('rooms',[$room->id])}}" >
-                                            <img style="width: 100px;height: 100px;" src="{{asset('images')}}/{{$room->image}}">
+                                            <img style="width: 100px;height: 100px;" src="{{asset('images')}}/{{$room->image}}" class="test">
                                         </a>
                                     </td>
                                     <td>

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Comment;
 use App\Room;
 use http\Url;
+use Cache;
+use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RoomController extends Controller
 {
@@ -38,7 +41,22 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
+        $input = $request->except('_token');
+        //dd($input);
 
+        Mail::send('email',['input' => $input],function ($message) use ($input){
+
+            $mail_name = env('MAIL_USERNAME');
+
+            $message->to($input['email_to'])->subject('Chat');
+
+            $message->from($mail_name);
+        });
+
+        if(Mail::failures()){
+            return redirect()->back()->with('message','Email not send');
+        }
+        return redirect()->back()->with('message','Email  send');
     }
 
     /**
@@ -63,11 +81,11 @@ class RoomController extends Controller
         }
 
         $user_id = null;
+        $user = null;
+
         if(Auth::user()){
             $user_id = Auth::user()->id;
-
         }
-
         $comments = $this->getComment($id);
         $data = [
             'id' => $id,
@@ -133,6 +151,7 @@ class RoomController extends Controller
 
 
     }
+
 
 
     public function getComment($where = false){

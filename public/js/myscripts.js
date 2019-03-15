@@ -27,7 +27,7 @@ $(document).ready(function ($) {
         var url = $(this).find('.url').val();
         var room_user_id = $(this).find('.rooom_user_id').val();
         var user_id = $(this).find('.user_id').val();
-
+        $('.users_count').append(room_user_id);
 
         if(html === ' Private' && room_user_id !== user_id ){
            var name =  prompt('Please enter your url',);
@@ -45,6 +45,7 @@ $(document).ready(function ($) {
 
 
     });
+
 
 
 });
