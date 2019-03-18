@@ -1,0 +1,1 @@
+<h2>Thank you, you have successfully registered</h2>

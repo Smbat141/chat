@@ -1,3 +1,7 @@
+function message(text){
+    $('.chat-result').append(text);
+}
+
 $(document).ready(function ($) {
     $('#comment').on('click','#submit',function (event) {
         event.preventDefault();
@@ -41,11 +45,27 @@ $(document).ready(function ($) {
            }
 
         }
-
-
-
     });
 
+    var socket = new WebSocket('ws:http://localhost:3000/room-number/31');
 
+    socket.onopen = function () {
+        message('connection established');
+    }
+
+    socket.onerror = function (error) {
+        message('error connection' + (error.message ? error.message : '') + '<br>');
+
+    }
+
+    socket.onclose = function () {
+        message('connection closed');
+
+    }
+
+    socket.onmessage = function (event) {
+        var data = JSON.parse(evend.data);
+        message('<div>' + data.type + '-' + data.message + '</div>')
+    }
 
 });

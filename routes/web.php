@@ -20,6 +20,14 @@ Auth::routes();
 //Route::get('/home', 'HomeController@index')->name('home');
 
 
+//queue
+/*Route::get('/',function (){
+    \App\Jobs\SendMessage::withChain([
+        new \App\Jobs\SendEmail('email send'),
+        new \App\Jobs\ShowResult('show result'),
+    ])->dispatch('start job');
+});*/
+
 Route::resource('/','indexController');
 Route::resource('/room','RoomController');
 Route::resource('/comment','CommentController');
@@ -27,3 +35,4 @@ Route::get('/room-number/{id}',['uses'=>'RoomController@showRoom','as'=>'rooms']
 
 Route::get('login/{service}', ['uses' => 'Auth\LoginController@redirectToProvider','as' => 'loginSocialite'] );
 Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback');
+

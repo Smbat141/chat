@@ -1,10 +1,8 @@
 @include('errors')
-<div style="width: 215px;height: 570px;border:1px solid red;margin-left: 118px;position:absolute ">
-<h4 class="text-center">Users</h4>
+<div style="width: 215px;height: 570px;border:1px solid grey;margin-left: 118px;position:absolute ">
+<h4 class="text-center">Users onlain</h4>
     <hr/>
-    <p id="users_count" class="text-center">
 
-    </p><hr/>
 </div>
 <div class="container">
     <div class="row">

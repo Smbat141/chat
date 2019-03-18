@@ -81,7 +81,6 @@ class RoomController extends Controller
         }
 
         $user_id = null;
-        $user = null;
 
         if(Auth::user()){
             $user_id = Auth::user()->id;
