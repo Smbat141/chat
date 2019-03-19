@@ -25,8 +25,8 @@
                 <div class="panel-heading">
                        <button class="btn btn-primary" style="margin-left: 664px"> <a href="{{route('index')}}" style="color: white">Exit</a></button>
                 </div>
-                <div class="panel-heading"  style="width: 100%;height: 300px;overflow: auto">
-                    @foreach($comments as $comment)
+                <div class="panel-heading chat"  style="width: 100%;height: 300px;overflow: auto">
+                    {{--@foreach($comments as $comment)
                         <div class="alert alert-primary text-center">
                             @if(isset($comment->user->name))
                                 <p>{{$comment->user->name}}</p>
@@ -36,7 +36,7 @@
                             <p>{{$comment->text}}</p>
                         </div>
                         <hr/>
-                    @endforeach
+                    @endforeach--}}
                 </div>
                 <div class="panel-heading">
                     <form action="{{route('comment.store')}}"  class="contact-form" id="comment" method="POST" enctype="multipart/form-data">
@@ -44,7 +44,8 @@
                         <div class="form-group">
                             <input type="hidden"  name="room_id" value="{{$id}}">
                             <input type="hidden"  name="user_id" value="{{$user_id}}">
-                            <input type="text"  name="text" class="form-control" placeholder="Room">
+                            <input type="hidden"  name="user_name" value="{{$user_name}}" class="user_name">
+                            <input type="text"  name="text" class="form-control comment_val" placeholder="Room" id="comment_val">
                             <button type="submit" class="btn-primary" id="submit">Save</button>
                         </div>
                     </form>
@@ -61,3 +62,35 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function ($) {
+        var socket = io(':6001');
+        socket.connect('http://localhost:8000/room-number/31');
+
+
+        function appendMessage(data,user_name){
+
+            $('.chat').append('<div class="alert alert-primary text-center">' +
+                                    '<p>' + user_name + '</p>' +
+                                    '<p>' + data.message + '</p><hr/>' +
+                                '</div>');
+        }
+
+        $('#comment').on('click','#submit',function (event) {
+            event.preventDefault();
+            var text = $('div .comment_val').val();
+            var user_name = $('div .user_name').val();
+            var msg = {message : text};
+
+            socket.send({message : msg,name : user_name});
+            appendMessage(msg,user_name);
+            return false;
+        });
+
+        socket.on('message',function (data) {
+            appendMessage(data.message,data.name);
+        });
+
+    });
+
+</script>

@@ -14,6 +14,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 </head>
 <body>
@@ -77,6 +79,7 @@
 </div>
 
 <!-- Scripts -->
+
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/myscripts.js') }}"></script>
 

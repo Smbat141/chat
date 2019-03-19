@@ -71,7 +71,8 @@ class RoomController extends Controller
     }
 
     public function showRoom($id){
-       if(strlen($id) == 15){
+
+        if(strlen($id) == 15){
             $room = Room::where('key',$id)->first();
             $id = $room->id;
         }
@@ -81,14 +82,19 @@ class RoomController extends Controller
         }
 
         $user_id = null;
-
         if(Auth::user()){
             $user_id = Auth::user()->id;
+            $user_name = Auth::user()->name;
+        }
+
+        if(!isset($user_name)){
+            $user_name = 'Guest';
         }
         $comments = $this->getComment($id);
         $data = [
             'id' => $id,
             'user_id' => $user_id,
+            'user_name' => $user_name,
             'comments' => $comments,
             'title' => 'Room-'.$id,
             'room' => $room,
