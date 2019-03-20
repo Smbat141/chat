@@ -3,7 +3,7 @@ function message(text){
 }
 
 $(document).ready(function ($) {
-  /*  $('#comment').on('click','#submit',function (event) {
+    $('#comment').on('click','#submit',function (event) {
         event.preventDefault();
 
         var data = $('#comment').serializeArray();
@@ -23,7 +23,7 @@ $(document).ready(function ($) {
                 console.log('error');
             }
         })
-    })*/
+    })
 
 
     $('.get_room').on('click',function(){
@@ -43,7 +43,6 @@ $(document).ready(function ($) {
                alert('error');
                 return false
            }
-
         }
     });
 

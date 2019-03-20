@@ -1,8 +1,8 @@
 @include('errors')
-<div style="width: 215px;height: 570px;border:1px solid grey;margin-left: 118px;position:absolute ">
+<div style="width: 215px;height: 570px;border:1px solid grey;margin-left: 118px;position:absolute">
 <h4 class="text-center">Users onlain</h4>
     <hr/>
-
+    <p class="count_users text-center"></p>
 </div>
 <div class="container">
     <div class="row">
@@ -26,7 +26,7 @@
                        <button class="btn btn-primary" style="margin-left: 664px"> <a href="{{route('index')}}" style="color: white">Exit</a></button>
                 </div>
                 <div class="panel-heading chat"  style="width: 100%;height: 300px;overflow: auto">
-                    {{--@foreach($comments as $comment)
+                    @foreach($comments as $comment)
                         <div class="alert alert-primary text-center">
                             @if(isset($comment->user->name))
                                 <p>{{$comment->user->name}}</p>
@@ -36,7 +36,7 @@
                             <p>{{$comment->text}}</p>
                         </div>
                         <hr/>
-                    @endforeach--}}
+                    @endforeach
                 </div>
                 <div class="panel-heading">
                     <form action="{{route('comment.store')}}"  class="contact-form" id="comment" method="POST" enctype="multipart/form-data">
@@ -66,7 +66,9 @@
     $(document).ready(function ($) {
         var socket = io(':6001');
         //socket.connect('http://localhost:8000/room-number/31');
-
+        socket.on('userCount', function (data) {
+            $('div .count_users').html(data.userCount);
+        });
 
         function appendMessage(name,message){
 
@@ -81,7 +83,6 @@
             var message = $('div .comment_val').val();
             var user_name = $('div .user_name').val();
 
-            //socket.send({name : user_name,message : msg.message});
             socket.send({name : user_name,message : message});
             appendMessage(user_name,message);
             return false;

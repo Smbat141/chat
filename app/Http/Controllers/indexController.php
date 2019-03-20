@@ -62,6 +62,8 @@ class indexController extends Controller
      */
     public function store(RoomRequest $request)
     {
+
+       // dd($request->all());
         $data = $request->except('_token');
         $user = Auth::user()->id;
         $data['user_id'] = $user;

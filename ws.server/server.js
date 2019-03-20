@@ -1,7 +1,17 @@
 var io = require('socket.io')(6001);
+var userCount = 0;
 
 io.on('connection',function (socket) {
     console.log('New Connection:',socket.id);
+
+    userCount++;
+    io.sockets.emit('userCount', { userCount: userCount + ' ' + 'online' });
+
+    socket.on('disconnect', function() {
+        userCount--;
+        io.sockets.emit('userCount', { userCount: userCount + ' ' + 'online'});
+    });
+
 
     //socket.send('message from server');
 
@@ -15,3 +25,4 @@ io.on('connection',function (socket) {
 
 
 });
+
