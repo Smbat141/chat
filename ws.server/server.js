@@ -10,10 +10,8 @@ io.on('connection',function (socket) {
     //socket.broadcast.send('New User');
     
     socket.on('message',function (data) {
-        socket.broadcast.send(data.message,data.name);
+        socket.broadcast.send({name : data.name,message : data.message});
     })
 
-
-    
 
 });

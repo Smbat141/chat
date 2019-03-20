@@ -65,30 +65,30 @@
 <script>
     $(document).ready(function ($) {
         var socket = io(':6001');
-        socket.connect('http://localhost:8000/room-number/31');
+        //socket.connect('http://localhost:8000/room-number/31');
 
 
-        function appendMessage(data,user_name){
+        function appendMessage(name,message){
 
             $('.chat').append('<div class="alert alert-primary text-center">' +
-                                    '<p>' + user_name + '</p>' +
-                                    '<p>' + data.message + '</p><hr/>' +
+                                    '<p>' + name + '</p>' +
+                                    '<p>' + message + '</p><hr/>' +
                                 '</div>');
         }
 
         $('#comment').on('click','#submit',function (event) {
             event.preventDefault();
-            var text = $('div .comment_val').val();
+            var message = $('div .comment_val').val();
             var user_name = $('div .user_name').val();
-            var msg = {message : text};
 
-            socket.send({message : msg,name : user_name});
-            appendMessage(msg,user_name);
+            //socket.send({name : user_name,message : msg.message});
+            socket.send({name : user_name,message : message});
+            appendMessage(user_name,message);
             return false;
         });
 
         socket.on('message',function (data) {
-            appendMessage(data.message,data.name);
+            appendMessage(data.name,data.message);
         });
 
     });
