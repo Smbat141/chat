@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@include('errors')
 @section('content')
     <div class="container">
         <div class="row">
@@ -24,6 +25,7 @@
                                 <select class="form-control" name="status">
                                     <option>Public</option>
                                     <option>Private</option>
+                                    <option>All</option>
                                 </select>
                             </div>
                             <div class="form-group">

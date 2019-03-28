@@ -1,10 +1,14 @@
-@include('errors')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <p class="text-center">Web app</p>
+                        {{csrf_field()}}
+                        <p><input name="search" type="radio" class="search_status" value="Public">  Public</p>
+                        <p><input name="search" type="radio" class="search_status" value="Private"> Private</p>
+                        <p><input name="search" type="radio" class="search_status" value="All"> All</p>
+                        <button class="search">Search</button>
                 </div>
                 @if(isset($user))
                 <div class="panel-heading">

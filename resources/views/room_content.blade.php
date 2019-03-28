@@ -1,8 +1,11 @@
 @include('errors')
-<div style="width: 215px;height: 570px;border:1px solid grey;margin-left: 118px;position:absolute">
+<div style="width: 215px;height: 169px;border:1px solid grey;margin-left: 118px;position:absolute">
 <h4 class="text-center">Users onlain</h4>
     <hr/>
     <p class="count_users text-center"></p>
+    <div>
+        <span style="font-size:12px;" >comments are deleted every 24 hours</span>
+    </div>
 </div>
 <div class="container">
     <div class="row">
@@ -23,7 +26,7 @@
                         </form>
                 @endif
                 <div class="panel-heading">
-                       <button class="btn btn-primary" style="margin-left: 664px"> <a href="{{route('index')}}" style="color: white">Exit</a></button>
+                       <button class="btn btn-primary" style="margin-left: 664px"> <a href="{{route('roomShow')}}" style="color: white">Exit</a></button>
                 </div>
                 <div class="panel-heading chat"  style="width: 100%;height: 300px;overflow: auto">
                     @foreach($comments as $comment)
@@ -62,36 +65,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function ($) {
-        var socket = io(':6001');
-        //socket.connect('http://localhost:8000/room-number/31');
-        socket.on('userCount', function (data) {
-            $('div .count_users').html(data.userCount);
-        });
-
-        function appendMessage(name,message){
-
-            $('.chat').append('<div class="alert alert-primary text-center">' +
-                                    '<p>' + name + '</p>' +
-                                    '<p>' + message + '</p><hr/>' +
-                                '</div>');
-        }
-
-        $('#comment').on('click','#submit',function (event) {
-            event.preventDefault();
-            var message = $('div .comment_val').val();
-            var user_name = $('div .user_name').val();
-
-            socket.send({name : user_name,message : message});
-            appendMessage(user_name,message);
-            return false;
-        });
-
-        socket.on('message',function (data) {
-            appendMessage(data.name,data.message);
-        });
-
-    });
-
-</script>
