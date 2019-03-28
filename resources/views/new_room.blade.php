@@ -9,7 +9,7 @@
                         <p class="text-center">Creat new room</p>
                     </div>
                     <div class="panel-heading">
-                        <form action="{{route('store')}}"  class="contact-form" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('room.store')}}"  class="contact-form" method="POST" enctype="multipart/form-data">
                             {{csrf_field()}}
                             <div class="form-group">
                                 <label for="name">Room name</label>

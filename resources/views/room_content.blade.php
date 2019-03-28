@@ -15,7 +15,7 @@
                     <div class="panel-heading">
                        <p>Your room url <a href="{{url('room-number/'.$room->key)}}">{{url('room-number/'.$room->key)}}</a></p>
                     </div>
-                        <form method="POST" action="{{route('room.store')}}">
+                        <form method="POST" action="{{route('sendEmail')}}">
                             {{csrf_field()}}
                             <div>
                                 <label for="email" class="col-md-4 control-label">Send url in email address</label>
@@ -26,7 +26,7 @@
                         </form>
                 @endif
                 <div class="panel-heading">
-                       <button class="btn btn-primary" style="margin-left: 664px"> <a href="{{route('roomShow')}}" style="color: white">Exit</a></button>
+                       <button class="btn btn-primary" style="margin-left: 664px"> <a href="{{route('index')}}" style="color: white">Exit</a></button>
                 </div>
                 <div class="panel-heading chat"  style="width: 100%;height: 300px;overflow: auto">
                     @foreach($comments as $comment)

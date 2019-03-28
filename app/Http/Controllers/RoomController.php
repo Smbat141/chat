@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Http\Requests\RoomRequest;
 use App\Room;
 use http\Url;
 use Cache;
@@ -30,7 +31,16 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        if(Auth::user()){
+            $data = [
+                'title' => 'Create new room',
+            ];
+
+            return view('new_room',$data);
+        }
+        else{
+            abort(404);
+        }
     }
 
     /**
@@ -39,8 +49,36 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoomRequest $request)
     {
+        dd($request->all());
+        $data = $request->except('_token');
+        $user = Auth::user()->id;
+        $data['user_id'] = $user;
+        if($data['status'] == 'Private'){
+            $data['key'] = str_random(15);
+        }
+
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $data['image'] = $file->hashName();
+            $file->move(public_path('images'),$data['image']);
+
+        }
+        $room = new Room();
+        $room->fill($data);
+
+        if($room->save()){
+            if($data['status'] == 'Private'){
+                return redirect()->route('rooms',$room->key);
+            }
+            return redirect()->route('rooms',$room->id);
+
+        }
+
+    }
+
+    public function sendEmail(Request $request){
         $input = $request->except('_token');
         //dd($input);
 
@@ -58,7 +96,6 @@ class RoomController extends Controller
         }
         return redirect()->back()->with('message','Email  send');
     }
-
     /**
      * Display the specified resource.
      *

@@ -29,8 +29,9 @@ Auth::routes();
 });*/
 
 Route::resource('/','indexController');
-Route::match(['get','post'],'/',['uses'=>'indexController@roomShow','as'=>'roomShow']);
+//Route::get('/',['uses'=>'indexController@roomShow','as'=>'roomShow']);
 Route::resource('/room','RoomController');
+Route::post('/room/sendEmail',['uses'=>'RoomController@sendEmail','as'=>'sendEmail']);
 Route::resource('/comment','CommentController');
 Route::get('/room-number/{id}',['uses'=>'RoomController@showRoom','as'=>'rooms']);
 

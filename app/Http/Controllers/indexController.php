@@ -15,45 +15,18 @@ class indexController extends Controller
 
 
 
-    public function roomShow(Request $request){
+    public function index(){
 
         $user = Auth::user();
-        if($user){
-            if($request->ajax()){
-                $rooms = Room::where('status',$request->get('status'))->get();
-                $html = '';
-                $a = '';
-                foreach ($rooms as $room){
-                    $a=$room->status == "Private" ? route("rooms",$room->key) : route("rooms",[$room->id]);
-                    $html .= '<tr class="get_room">'.
-                                    '
-                                    <input type="hidden" value="'.url('room-number/'.$room->key).'" class="url">
-                                    <input type="hidden" value="'.$room->user_id.'" class="rooom_user_id">
-                                    <input type="hidden" value="'.$user->id.'" class="user_id">
-                                    '.
-                                '<td>'.
-                                    '<a href="'.$a.'">'.
-                                        '<img class="test" style="width: 100px;height: 100px;" src="'.asset("images").'/'.$room->image.'">'
-                                    .'</a>'.
-                                '</td>'.
-                                '<td>'.$room->name.'</td>'.
-                                '<td>'.'<div style="width: 6rem;"><span class="badge badge-primary status" style="background-color:#1f648b"> '.$room->status.'</span>'.'</div></td>'.
-                                '<td>'.$room->user->name.'</td>'
-                            .'<tr>';
+    if($user){
+        $rooms = Room::all();
 
-                }
+    }
+    else{
+        $rooms = Room::where('status','Public')->get();
 
-                return Response($html);
+    }
 
-            }
-            else{
-                $rooms = Room::all();
-
-            }
-        }
-        else{
-            $rooms = Room::where('status',$request->get('status'))->get();
-        }
         $data = [
             'rooms' => $rooms,
             'title' => 'Home',
@@ -62,22 +35,16 @@ class indexController extends Controller
         return view('welcome',$data);
     }
 
+    public function searchRooms(Request $request){
+
+    }
 
 
 
 
     public function create()
     {
-    if(Auth::user()){
-        $data = [
-            'title' => 'Create new room',
-        ];
 
-        return view('new_room',$data);
-    }
-    else{
-        abort(404);
-    }
 
     }
 
@@ -87,31 +54,49 @@ class indexController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RoomRequest $request)
+    public function store(Request $request)
     {
 
-       // dd($request->all());
-        $data = $request->except('_token');
-        $user = Auth::user()->id;
-        $data['user_id'] = $user;
-        if($data['status'] == 'Private'){
-            $data['key'] = str_random(15);
-        }
+        $user = Auth::user();
+        if($user){
+            if($request->ajax()){
+                $select_data = json_decode($request->get('status'));
+                if(empty($select_data)){
+                    $rooms = Room::all();
+                }
+                else{
+                    $rooms = Room::whereIn('status',$select_data)
+                        ->get();
+                }
+                $html = '';
+                $link = '';
+                foreach ($rooms->reverse() as $room){
+                    $link=$room->status == "Private" ? route("rooms",$room->key) : route("rooms",[$room->id]);
+                    $private_data = '';
+                    if(isset($room->key)){
+                        $private_data = '
+                                    <input type="hidden" value="'.url('room-number/'.$room->key).'" class="url">
+                                    <input type="hidden" value="'.$room->user_id.'" class="rooom_user_id">
+                                    <input type="hidden" value="'.$user->id.'" class="user_id">
+                                    ';
+                    }
+                    $html .= '<tr class="get_room">'.$private_data
+                        .
+                        '<td>'.
+                        '<a href="'.$link.'">'.
+                        '<img class="test" style="width: 100px;height: 100px;" src="'.asset("images").'/'.$room->image.'">'
+                        .'</a>'.
+                        '</td>'.
+                        '<td>'.$room->name.'</td>'.
+                        '<td>'.'<div style="width: 6rem;"><span class="badge badge-primary status" style="background-color:#1f648b"> '.$room->status.'</span>'.'</div></td>'.
+                        '<td>'.$room->user->name.'</td>'
+                        .'<tr>';
 
-        if($request->hasFile('image')){
-            $file = $request->file('image');
-            $data['image'] = $file->hashName();
-            $file->move(public_path('images'),$data['image']);
+                }
 
-        }
-        $room = new Room();
-        $room->fill($data);
+                return Response($html);
 
-        if($room->save()){
-            if($data['status'] == 'Private'){
-                return redirect()->route('rooms',$room->key);
             }
-            return redirect()->route('rooms',$room->id);
 
         }
 

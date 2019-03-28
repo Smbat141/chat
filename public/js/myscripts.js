@@ -1,6 +1,7 @@
 function message(text){
     $('.chat-result').append(text);
 }
+//Comment ajax request
 
 $(document).ready(function ($) {
     $('#comment').on('click','#submit',function (event) {
@@ -24,9 +25,10 @@ $(document).ready(function ($) {
             }
         })
     })
+//Comment ajax request END
 
+//Private room found out
     $(document).on('click','.get_room', function(e) {
-        e.preventDefault();
         var html = $(this).find('div span').html();
         console.log(html);
         var url = $(this).find('.url').val();
@@ -47,8 +49,9 @@ $(document).ready(function ($) {
         }
     });
 
+//Private room found END
 
-
+//Realtime chat settings(Socket.io connection)
     var socket = io(':6001');
     //socket.connect('http://localhost:8000/room-number/31');
     socket.on('userCount', function (data) {
@@ -76,22 +79,22 @@ $(document).ready(function ($) {
     socket.on('message',function (data) {
         appendMessage(data.name,data.message);
     });
+//Socket.io END
 
+//Room Search settings
+    $('.search_status').change(function(e){
+        var data =  $("input[name='search']:checkbox:checked").map(function () {
+            return $(this).val();
+        }).get();
+        console.log(data);
 
-
-    $('.search').on('click',function (e) {
-        var data = '';
-        $.each($("input[name='search']:checked"), function(){
-            data = ($(this).val());
-        });
         $.ajax({
             url:'http://localhost:8000',
             type:"POST",
-            data:{status:data},
+            data:{status:JSON.stringify(data)},
             headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            //dataType:'html',
             success:function (html) {
-                console.log(html);
+                console.log(data);
                 $('tbody').html(html);
             },
 
@@ -102,3 +105,4 @@ $(document).ready(function ($) {
     })
 
 });
+//Search END
