@@ -51,14 +51,18 @@ class RoomController extends Controller
      */
     public function store(RoomRequest $request)
     {
-        dd($request->all());
         $data = $request->except('_token');
         $user = Auth::user()->id;
         $data['user_id'] = $user;
-        if($data['status'] == 'Private'){
+        if($data['status_id'] == 'Private'){
             $data['key'] = str_random(15);
+            $data['status_id'] = 2;
         }
+        if ($data['status_id'] == 'Public'){
+            $data['status_id'] = 1;
 
+        }
+        //dd($data);
         if($request->hasFile('image')){
             $file = $request->file('image');
             $data['image'] = $file->hashName();
@@ -67,9 +71,9 @@ class RoomController extends Controller
         }
         $room = new Room();
         $room->fill($data);
-
+        $room->save();
         if($room->save()){
-            if($data['status'] == 'Private'){
+            if($data['status_id'] == 'Private'){
                 return redirect()->route('rooms',$room->key);
             }
             return redirect()->route('rooms',$room->id);
@@ -80,7 +84,6 @@ class RoomController extends Controller
 
     public function sendEmail(Request $request){
         $input = $request->except('_token');
-        //dd($input);
 
         Mail::send('email',['input' => $input],function ($message) use ($input){
 

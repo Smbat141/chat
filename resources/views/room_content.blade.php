@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                @if($room->status == 'Private' and $room->user_id == $user_id)
+                @if($room->status->name == 'Private' and $room->user_id == $user_id)
                     <div class="panel-heading">
                        <p>Your room url <a href="{{url('room-number/'.$room->key)}}">{{url('room-number/'.$room->key)}}</a></p>
                     </div>

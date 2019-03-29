@@ -17,14 +17,13 @@ class indexController extends Controller
 
     public function index(){
 
-        $user = Auth::user();
+
+   $user = Auth::user();
     if($user){
         $rooms = Room::all();
-
     }
     else{
-        $rooms = Room::where('status','Public')->get();
-
+        $rooms = Room::where('status_id',1)->get();
     }
 
         $data = [
@@ -61,17 +60,18 @@ class indexController extends Controller
         if($user){
             if($request->ajax()){
                 $select_data = json_decode($request->get('status'));
+                //dump($select_data);
+
                 if(empty($select_data)){
                     $rooms = Room::all();
                 }
                 else{
-                    $rooms = Room::whereIn('status',$select_data)
-                        ->get();
+                    $rooms = Room::whereIn('status_id',$select_data)->get();
                 }
                 $html = '';
                 $link = '';
                 foreach ($rooms->reverse() as $room){
-                    $link=$room->status == "Private" ? route("rooms",$room->key) : route("rooms",[$room->id]);
+                    $link=$room->status->name == "Private" ? route("rooms",$room->key) : route("rooms",[$room->id]);
                     $private_data = '';
                     if(isset($room->key)){
                         $private_data = '
@@ -88,7 +88,7 @@ class indexController extends Controller
                         .'</a>'.
                         '</td>'.
                         '<td>'.$room->name.'</td>'.
-                        '<td>'.'<div style="width: 6rem;"><span class="badge badge-primary status" style="background-color:#1f648b"> '.$room->status.'</span>'.'</div></td>'.
+                        '<td>'.'<div style="width: 6rem;"><span class="badge badge-primary status" style="background-color:#1f648b"> '.$room->status->name.'</span>'.'</div></td>'.
                         '<td>'.$room->user->name.'</td>'
                         .'<tr>';
 
