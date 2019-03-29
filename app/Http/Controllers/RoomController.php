@@ -111,16 +111,13 @@ class RoomController extends Controller
     }
 
     public function showRoom($id){
-
         if(strlen($id) == 15){
             $room = Room::where('key',$id)->first();
             $id = $room->id;
         }
         else{
             $room = Room::where('id',$id)->first();
-
         }
-
         $user_id = null;
         if(Auth::user()){
             $user_id = Auth::user()->id;

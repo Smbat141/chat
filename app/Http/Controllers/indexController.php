@@ -17,7 +17,6 @@ class indexController extends Controller
 
     public function index(){
 
-
    $user = Auth::user();
     if($user){
         $rooms = Room::all();
@@ -33,13 +32,6 @@ class indexController extends Controller
         ];
         return view('welcome',$data);
     }
-
-    public function searchRooms(Request $request){
-
-    }
-
-
-
 
     public function create()
     {
@@ -60,8 +52,6 @@ class indexController extends Controller
         if($user){
             if($request->ajax()){
                 $select_data = json_decode($request->get('status'));
-                //dump($select_data);
-
                 if(empty($select_data)){
                     $rooms = Room::all();
                 }

@@ -36,7 +36,7 @@
                                 @else
                                 <p>Guest</p>
                             @endif
-                            <p>{{$comment->text}}</p>
+                            <p>{{$comment->text}}</p><span>{{$comment->created_at->format('Y:m:d H:i:s')}}</span>
                         </div>
                         <hr/>
                     @endforeach
