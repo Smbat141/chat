@@ -5,7 +5,7 @@ function message(text){
 
 $(document).ready(function ($) {
     $('#comment').on('click','#submit',function (event) {
-        event.preventDefault();
+        //event.preventDefault();
 
         var data = $('#comment').serializeArray();
 
@@ -30,7 +30,6 @@ $(document).ready(function ($) {
 //Private room found out
     $(document).on('click','.get_room', function(e) {
         var html = $(this).find('div span').html();
-        console.log(html);
         var url = $(this).find('.url').val();
         var room_user_id = $(this).find('.rooom_user_id').val();
         var user_id = $(this).find('.user_id').val();
@@ -83,8 +82,16 @@ $(document).ready(function ($) {
 
 //Room Search settings
     $('.search_status').change(function(e){
+        e.preventDefault();
         var data =  $("input[name='search']:checkbox:checked").map(function () {
-            return $(this).val();
+            var arr = [];
+            if($(this).val() == 'Public'){
+                 arr.push(1);
+            }
+            else if($(this).val() == 'Private'){
+                arr.push(2);
+            }
+            return arr;
         }).get();
         console.log(data);
 

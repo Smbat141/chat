@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                @if($room->status == 'Private' and $room->user_id == $user_id)
+                @if($room->status->name == 'Private' and $room->user_id == $user_id)
                     <div class="panel-heading">
                        <p>Your room url <a href="{{url('room-number/'.$room->key)}}">{{url('room-number/'.$room->key)}}</a></p>
                     </div>
@@ -36,7 +36,7 @@
                                 @else
                                 <p>Guest</p>
                             @endif
-                            <p>{{$comment->text}}</p>
+                            <p>{{$comment->text}}</p><span>{{$comment->created_at->format('Y:m:d H:i:s')}}</span>
                         </div>
                         <hr/>
                     @endforeach
@@ -45,7 +45,7 @@
                     <form action="{{route('comment.store')}}"  class="contact-form" id="comment" method="POST" enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="form-group">
-                            <input type="hidden"  name="room_id" value="{{$id}}">
+                            <input type="hidden"  name="room_id" value="{{$room_id}}">
                             <input type="hidden"  name="user_id" value="{{$user_id}}">
                             <input type="hidden"  name="user_name" value="{{$user_name}}" class="user_name">
                             <input type="text"  name="text" class="form-control comment_val" placeholder="Room" id="comment_val">

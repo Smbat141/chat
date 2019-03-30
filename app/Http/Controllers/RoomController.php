@@ -11,6 +11,8 @@ use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use File;
+
 
 class RoomController extends Controller
 {
@@ -51,14 +53,18 @@ class RoomController extends Controller
      */
     public function store(RoomRequest $request)
     {
-        dd($request->all());
         $data = $request->except('_token');
         $user = Auth::user()->id;
         $data['user_id'] = $user;
-        if($data['status'] == 'Private'){
+        if($data['status_id'] == 'Private'){
             $data['key'] = str_random(15);
+            $data['status_id'] = 2;
         }
+        if ($data['status_id'] == 'Public'){
+            $data['key'] = str_random(10);
+            $data['status_id'] = 1;
 
+        }
         if($request->hasFile('image')){
             $file = $request->file('image');
             $data['image'] = $file->hashName();
@@ -67,20 +73,15 @@ class RoomController extends Controller
         }
         $room = new Room();
         $room->fill($data);
-
+        $room->save();
         if($room->save()){
-            if($data['status'] == 'Private'){
-                return redirect()->route('rooms',$room->key);
-            }
-            return redirect()->route('rooms',$room->id);
-
+            return redirect()->route('rooms',$room->key);
         }
 
     }
 
     public function sendEmail(Request $request){
         $input = $request->except('_token');
-        //dd($input);
 
         Mail::send('email',['input' => $input],function ($message) use ($input){
 
@@ -108,32 +109,31 @@ class RoomController extends Controller
     }
 
     public function showRoom($id){
-
         if(strlen($id) == 15){
             $room = Room::where('key',$id)->first();
             $id = $room->id;
         }
-        else{
-            $room = Room::where('id',$id)->first();
-
+        else if(strlen($id) == 10){
+            $room = Room::where('key',$id)->first();
         }
-
         $user_id = null;
         if(Auth::user()){
             $user_id = Auth::user()->id;
             $user_name = Auth::user()->name;
         }
 
+        $room_id = $room->id;
+
         if(!isset($user_name)){
             $user_name = 'Guest';
         }
-        $comments = $this->getComment($id);
+        $comments = $this->getComment($room_id);
         $data = [
-            'id' => $id,
+            'room_id' => $room_id,
             'user_id' => $user_id,
             'user_name' => $user_name,
             'comments' => $comments,
-            'title' => 'Room-'.$id,
+            'title' => 'Room',
             'room' => $room,
         ];
         return view('room',$data);
@@ -171,18 +171,20 @@ class RoomController extends Controller
     public function destroy($id)
     {
         $user_id = Auth::user()->id;
-        if(strlen($id) == 15){
-            $room = Room::where('key',$id)->first();
-        }
-        else{
-            $room = Room::where('id',$id)->first();
+        $room = Room::where('id',$id)->first();
 
-        }
         if($room->user_id == $user_id){
             $comments = $room->comments;
 
             foreach ($comments as $comment){
                 $comment->delete();
+            }
+
+
+            $path = public_path().'/images/'.$room->image;
+
+            if(File::exists($path)) {
+                File::delete($path);
             }
 
             $room->delete();

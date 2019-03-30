@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
-use App\Http\Requests\RoomRequest;
 use App\Room;
-use Carbon\Carbon;
 use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,17 +11,16 @@ class indexController extends Controller
 {
 
 
-
     public function index(){
 
-        $user = Auth::user();
+
+    $user = Auth::user();
+
     if($user){
         $rooms = Room::all();
-
     }
     else{
-        $rooms = Room::where('status','Public')->get();
-
+        $rooms = Room::where('status_id',1)->get();
     }
 
         $data = [
@@ -34,13 +30,6 @@ class indexController extends Controller
         ];
         return view('welcome',$data);
     }
-
-    public function searchRooms(Request $request){
-
-    }
-
-
-
 
     public function create()
     {
@@ -65,13 +54,12 @@ class indexController extends Controller
                     $rooms = Room::all();
                 }
                 else{
-                    $rooms = Room::whereIn('status',$select_data)
-                        ->get();
+                    $rooms = Room::whereIn('status_id',$select_data)->get();
                 }
                 $html = '';
                 $link = '';
                 foreach ($rooms->reverse() as $room){
-                    $link=$room->status == "Private" ? route("rooms",$room->key) : route("rooms",[$room->id]);
+                    $link=$room->status->name == "Private" ? route("rooms",$room->key) : route("rooms",[$room->id]);
                     $private_data = '';
                     if(isset($room->key)){
                         $private_data = '
@@ -88,7 +76,7 @@ class indexController extends Controller
                         .'</a>'.
                         '</td>'.
                         '<td>'.$room->name.'</td>'.
-                        '<td>'.'<div style="width: 6rem;"><span class="badge badge-primary status" style="background-color:#1f648b"> '.$room->status.'</span>'.'</div></td>'.
+                        '<td>'.'<div style="width: 6rem;"><span class="badge badge-primary status" style="background-color:#1f648b"> '.$room->status->name.'</span>'.'</div></td>'.
                         '<td>'.$room->user->name.'</td>'
                         .'<tr>';
 

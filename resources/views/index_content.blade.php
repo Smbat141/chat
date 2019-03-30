@@ -27,32 +27,32 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @foreach($rooms->reverse() as $room)
-                                <tr class="get_room">
-                                    @if(isset($room->key))
-                                        <input type="hidden" value="{{url('room-number/'.$room->key)}}" class="url">
-                                        <input type="hidden" value="{{$room->user_id}}" class="rooom_user_id">
-                                        <input type="hidden" value="{{$user->id}}" class="user_id">
-                                    @endif
-                                    <td>
-                                        <a href="{{$room->status == 'Private' ? route('rooms',[$room->key]) : route('rooms',[$room->id])}}" >
-                                            <img style="width: 100px;height: 100px;" src="{{asset('images')}}/{{$room->image}}" class="test">
-                                        </a>
-                                    </td>
-                                    <td>
-                                        {{$room->name}}
-                                    </td>
-                                    <td>
-                                        <div  style="width: 6rem;" >
-                                            <span class="badge badge-primary status" style="background-color:#1f648b"> {{$room->status}}</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{$room->user->name}}
-                                    </td>
 
-                                </tr>
-                            @endforeach
+                           @foreach($rooms->reverse() as $room)
+                               <tr class="get_room">
+                                   @if($room->status->name == 'Private' and strlen($room->key==15))
+                                       <input type="hidden" value="{{url('room-number/'.$room->key)}}" class="url">
+                                       <input type="hidden" value="{{$room->user_id}}" class="rooom_user_id">
+                                       <input type="hidden" value="{{$user->id}}" class="user_id">
+                                   @endif
+                                   <td>
+                                       <a href="{{route('rooms',[$room->key])}}" >
+                                           <img style="width: 100px;height: 100px;" src="{{asset('images')}}/{{$room->image}}" class="test">
+                                       </a>
+                                   </td>
+                                   <td>
+                                       {{$room->name}}
+                                   </td>
+                                   <td>
+                                       <div  style="width: 6rem;" >
+                                           <span class="badge badge-primary status" style="background-color:#1f648b"> {{$room->status->name}}</span>
+                                       </div>
+                                   </td>
+                                   <td>
+                                       {{$room->user->name}}
+                                   </td>
+                               </tr>
+                           @endforeach
                         </tbody>
                     </table>
 

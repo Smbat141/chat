@@ -22,10 +22,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Example select</label>
-                                <select class="form-control" name="status">
+                                <select class="form-control" name="status_id">
                                     <option>Public</option>
                                     <option>Private</option>
-                                    <option>All</option>
                                 </select>
                             </div>
                             <div class="form-group">
