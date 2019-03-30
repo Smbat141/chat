@@ -36,7 +36,6 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $input = $request->except('_token');
-
         if(Auth::user()){
             $user_id = Auth::user()->id;
             $input['user_id'] = $user_id;

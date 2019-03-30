@@ -118,3 +118,4 @@ Could not open input file: /home/smbat/Рабочий
 [2019-03-21 17:49:10] Processed:  App\Jobs\SendEmail
 [2019-03-21 18:06:10] Processing: App\Jobs\SendEmail
 [2019-03-21 18:06:12] Processed:  App\Jobs\SendEmail
+PHP Notice:  date_default_timezone_set(): Timezone ID 'Europe/Yerevan' is invalid in /home/smbat/Рабочий стол/chat/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/LoadConfiguration.php on line 49

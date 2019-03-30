@@ -5,7 +5,7 @@ function message(text){
 
 $(document).ready(function ($) {
     $('#comment').on('click','#submit',function (event) {
-        event.preventDefault();
+        //event.preventDefault();
 
         var data = $('#comment').serializeArray();
 

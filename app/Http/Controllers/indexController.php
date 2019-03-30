@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
-use App\Http\Requests\RoomRequest;
 use App\Room;
-use Carbon\Carbon;
 use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +11,11 @@ class indexController extends Controller
 {
 
 
-
     public function index(){
 
-   $user = Auth::user();
+
+    $user = Auth::user();
+
     if($user){
         $rooms = Room::all();
     }

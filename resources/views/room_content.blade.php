@@ -45,7 +45,7 @@
                     <form action="{{route('comment.store')}}"  class="contact-form" id="comment" method="POST" enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="form-group">
-                            <input type="hidden"  name="room_id" value="{{$id}}">
+                            <input type="hidden"  name="room_id" value="{{$room_id}}">
                             <input type="hidden"  name="user_id" value="{{$user_id}}">
                             <input type="hidden"  name="user_name" value="{{$user_name}}" class="user_name">
                             <input type="text"  name="text" class="form-control comment_val" placeholder="Room" id="comment_val">

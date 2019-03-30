@@ -30,13 +30,13 @@
 
                            @foreach($rooms->reverse() as $room)
                                <tr class="get_room">
-                                   @if(isset($room->key))
+                                   @if($room->status->name == 'Private' and strlen($room->key==15))
                                        <input type="hidden" value="{{url('room-number/'.$room->key)}}" class="url">
                                        <input type="hidden" value="{{$room->user_id}}" class="rooom_user_id">
                                        <input type="hidden" value="{{$user->id}}" class="user_id">
                                    @endif
                                    <td>
-                                       <a href="{{$room->status_id == 2 ? route('rooms',[$room->key]) : route('rooms',[$room->id])}}" >
+                                       <a href="{{route('rooms',[$room->key])}}" >
                                            <img style="width: 100px;height: 100px;" src="{{asset('images')}}/{{$room->image}}" class="test">
                                        </a>
                                    </td>
